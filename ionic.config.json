@@ -1,0 +1,7 @@
+{
+  "name": "My Fitness",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
