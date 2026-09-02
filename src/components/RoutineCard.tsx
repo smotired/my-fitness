@@ -1,15 +1,21 @@
 import { Exercise } from '../types';
 import Exercises from '../definitions/exercises';
 import './RoutineCard.css';
-import { IonContent, IonItem, IonLabel, IonList, IonListHeader, IonPopover } from '@ionic/react';
+import { IonContent, IonItem, IonLabel, IonList, IonListHeader, IonPopover, IonRange } from '@ionic/react';
 import AmountButton from './AmountButton';
+import { useState } from 'react';
+import { scaleAmount } from '../utils';
 
 interface ContainerProps {
     title: string,
     exercises: Exercise[],
+    intensity?: boolean,
 }
 
-const ExploreContainer: React.FC<ContainerProps> = ({ title, exercises }) => {
+const ExploreContainer: React.FC<ContainerProps> = ({ title, exercises, intensity = false }) => {
+    const [ scale, setScale ] = useState<number>(1);
+    const scaledExercises = exercises.map(({ kind, amount }) => ({ kind, amount: scaleAmount(amount, scale) }));
+
     // Return empty fragment if no exercises
     if (exercises.length == 0)
         return <></>;
@@ -21,7 +27,16 @@ const ExploreContainer: React.FC<ContainerProps> = ({ title, exercises }) => {
     return (
         <IonList inset {...linesProps}>
             <IonListHeader>{title}</IonListHeader>
-            {exercises.map((exercise) =>
+            { intensity && <IonItem>
+                    <IonRange
+                        labelPlacement='start' label="Intensity" snaps ticks={false}
+                        pin pinFormatter={(value) => `${Math.round(value * 100)}%`}
+                        min={0.50} max={1.35} step={0.05} activeBarStart={1} value={scale}
+                        onIonChange={({detail}) => setScale(detail.value as number)}
+                    />
+                </IonItem>
+            }
+            {scaledExercises.map((exercise) =>
                 <IonItem key={exercise.kind} className='workout-item'>
                     <div className='workout-label-container' id={`${exercise.kind}-label`}>
                         <IonLabel>{Exercises[exercise.kind].name}</IonLabel>

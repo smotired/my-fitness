@@ -32,7 +32,7 @@ const TabExercise: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen>
         <RoutineCard exercises={routine['preStretches']} title="Warmup Stretches" />
-        <RoutineCard exercises={routine['dumbbells']} title="Dumbbell Workout" />
+        <RoutineCard exercises={routine['dumbbells']} title="Dumbbell Workout" intensity />
         <RoutineCard exercises={routine['postStretches']} title="Cooldown Stretches" />
         <RoutineCard exercises={routine['cardio']} title="Evening Cardio" />
       </IonContent>
