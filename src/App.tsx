@@ -12,7 +12,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { fastFood, bag, barbell } from 'ionicons/icons';
 import TabExercise from './pages/TabExercise';
-import TabDiet from './pages/TabDiet';
+import TabMealPlan from './pages/TabMealPlan';
 import TabGroceries from './pages/TabGroceries';
 
 /* Core CSS required for Ionic components to work properly */
@@ -53,7 +53,7 @@ const App: React.FC = () => (
       <IonTabs>
         <IonRouterOutlet>
           <Route path="/exercise" element={<TabExercise />} />
-          <Route path="/diet" element={<TabDiet />} />
+          <Route path="/meal-plan" element={<TabMealPlan />} />
           <Route path="/groceries" element={<TabGroceries />} />
           <Route path="/" element={<Navigate to="/exercise" replace />} />
         </IonRouterOutlet>
@@ -62,9 +62,9 @@ const App: React.FC = () => (
             <IonIcon aria-hidden="true" icon={barbell} />
             <IonLabel>Exercise</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="diet" href="/diet">
+          <IonTabButton tab="meal-plan" href="/meal-plan">
             <IonIcon aria-hidden="true" icon={fastFood} />
-            <IonLabel>Diet</IonLabel>
+            <IonLabel>Meal Plan</IonLabel>
           </IonTabButton>
           <IonTabButton tab="groceries" href="/groceries">
             <IonIcon aria-hidden="true" icon={bag} />
