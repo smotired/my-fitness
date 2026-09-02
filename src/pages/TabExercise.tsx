@@ -1,26 +1,40 @@
-import { IonContent, IonHeader, IonListHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonListHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import './TabExercise.css';
 import Routine from '../definitions/routine';
 import RoutineCard from '../components/RoutineCard';
-import { useMemo } from 'react';
-import { getWeekday } from '../utils';
+import { useMemo, useState } from 'react';
+import { weekdayInfo } from '../utils';
+import { chevronBack, chevronForward } from 'ionicons/icons';
 
 const TabExercise: React.FC = () => {
-  const [ weekdayIndex, weekday ] = useMemo(getWeekday, []);
-  const today = Routine[weekdayIndex];
+  const [ selectedDay, setSelectedDay ] = useState<number>(new Date().getDay());
+  const { today, tomorrow, yesterday } = useMemo(() => weekdayInfo(selectedDay), [selectedDay]);
+  const routine = Routine[today.type];
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>{weekday}</IonTitle>
+          <IonTitle>{today.name}</IonTitle>
+          <IonButtons slot='start'>
+            <IonButton onClick={() => setSelectedDay(day => (day + 6) % 7)}>
+              <IonIcon slot='start' icon={chevronBack} />
+              {yesterday.name}
+            </IonButton>
+          </IonButtons>
+          <IonButtons slot='end'>
+            <IonButton onClick={() => setSelectedDay(day => (day + 1) % 7)}>
+              <IonIcon slot='end' icon={chevronForward} />
+              {tomorrow.name}
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <RoutineCard exercises={today['preStretches']} title="Warmup Stretches" />
-        <RoutineCard exercises={today['dumbbells']} title="Dumbbell Workout" />
-        <RoutineCard exercises={today['postStretches']} title="Cooldown Stretches" />
-        <RoutineCard exercises={today['cardio']} title="Evening Cardio" />
+        <RoutineCard exercises={routine['preStretches']} title="Warmup Stretches" />
+        <RoutineCard exercises={routine['dumbbells']} title="Dumbbell Workout" />
+        <RoutineCard exercises={routine['postStretches']} title="Cooldown Stretches" />
+        <RoutineCard exercises={routine['cardio']} title="Evening Cardio" />
       </IonContent>
     </IonPage>
   );

@@ -222,7 +222,7 @@ const Routine: Record<Weekday, DailyRoutine> = {
             },
             {
                 'kind': 'lateralRaises',
-                amount: { kind: 'sets', sets: 3, amount: { kind: 'count', count: 22 } },
+                amount: { kind: 'sets', sets: 3, amount: { kind: 'count', count: 12 } },
             },
             {
                 'kind': 'frontRaises',
