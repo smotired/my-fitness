@@ -4,7 +4,7 @@ import './TabGroceries.css';
 import GroceryList from '../definitions/groceryList';
 import { useRef } from 'react';
 
-const Tab3: React.FC = () => {
+const TabGroceries: React.FC = () => {
   const shoppingListRef = useRef<ShoppingListHandle>(null);
 
   return (
@@ -24,4 +24,4 @@ const Tab3: React.FC = () => {
   );
 };
 
-export default Tab3;
+export default TabGroceries;
