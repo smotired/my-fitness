@@ -1,22 +1,26 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import { IonContent, IonHeader, IonListHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import './TabExercise.css';
+import Routine from '../definitions/routine';
+import RoutineCard from '../components/RoutineCard';
+import { useMemo } from 'react';
+import { getWeekday } from '../utils';
 
 const TabExercise: React.FC = () => {
+  const [ weekdayIndex, weekday ] = useMemo(getWeekday, []);
+  const today = Routine[weekdayIndex];
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Exercise</IonTitle>
+          <IonTitle>{weekday}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Exercise</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer name="Exercise" />
+        <RoutineCard exercises={today['preStretches']} title="Warmup Stretches" />
+        <RoutineCard exercises={today['dumbbells']} title="Dumbbell Workout" />
+        <RoutineCard exercises={today['postStretches']} title="Cooldown Stretches" />
+        <RoutineCard exercises={today['cardio']} title="Evening Cardio" />
       </IonContent>
     </IonPage>
   );
