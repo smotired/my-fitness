@@ -1,0 +1,9 @@
+.meal-item {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0;
+}
+
+.item-title {
+    font-weight: bold;
+}

@@ -2,13 +2,13 @@ import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonListHeader, I
 import './TabExercise.css';
 import Routine from '../definitions/routine';
 import RoutineCard from '../components/RoutineCard';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { weekdayInfo } from '../utils';
 import { chevronBack, chevronForward } from 'ionicons/icons';
 
 const TabExercise: React.FC = () => {
   const [ selectedDay, setSelectedDay ] = useState<number>(new Date().getDay());
-  const { today, tomorrow, yesterday } = useMemo(() => weekdayInfo(selectedDay), [selectedDay]);
+  const { today, tomorrow, yesterday } = weekdayInfo(selectedDay);
   const routine = Routine[today.type];
 
   return (

@@ -1,5 +1,6 @@
 // Defines different utility types for the application.
 import Exercises from "./definitions/exercises";
+import FoodItems from "./definitions/foods";
 
 export type Weekday = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
 
@@ -43,4 +44,17 @@ export type DailyRoutine = {
     postStretches: Exercise[],
     // Evening cardio at the gym, warming up with the same exercise but slower beforehand.
     cardio: Exercise[],
+}
+
+export type FoodKind = keyof typeof FoodItems;
+
+export type FoodEntry = {
+    kind: FoodKind,
+    servings: number,
+}
+
+export type DailyMealPlan = {
+    breakfast: FoodEntry[],
+    lunch: FoodEntry[],
+    dinner: FoodEntry[],
 }
