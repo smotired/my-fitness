@@ -46,6 +46,9 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "date=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
+      - name: List Xcode project files
+        run: ls ios/App/
+
       # No signing certificate, will let SideStore re-sign it.
       - name: Unsigned archive
         run: |
