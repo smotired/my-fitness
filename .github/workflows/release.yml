@@ -65,6 +65,8 @@ jobs:
             -archivePath "$RUNNER_TEMP/App.xcarchive" \
             -sdk iphoneos \
             -destination 'generic/platform=iOS' \
+            MARKETING_VERSION="${{ steps.version.outputs.pkg_version }}" \
+            CURRENT_PROJECT_VERSION="${{ steps.version.outputs.build_number }}" \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
             clean archive
 
