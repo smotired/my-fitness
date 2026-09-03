@@ -25,7 +25,7 @@ if (existsSync(sourcePath)) {
     source = JSON.parse(readFileSync(sourcePath, 'utf8'));
 } else {
     source = {
-        name: 'Personal Source',
+        name: 'Sam Hill',
         identifier: `${appId}.source`,
         apps: [],
     };
