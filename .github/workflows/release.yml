@@ -49,10 +49,10 @@ jobs:
       # No signing certificate, will let SideStore re-sign it.
       - name: Unsigned archive
         run: |
-          xcodebuild -workspace ios/App/App.xcworkspace \
-            -scheme App \
+          xcodebuild -workspace ios/App/MyFitness.xcworkspace \
+            -scheme MyFitness \
             -configuration Release \
-            -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            -archivePath "$RUNNER_TEMP/MyFitness.xcarchive" \
             -sdk iphoneos \
             -destination 'generic/platform=iOS' \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
@@ -61,9 +61,9 @@ jobs:
       - name: Package IPA
         id: package
         run: |
-          IPA_NAME="App-${{ steps.version.outputs.full_version }}.ipa"
+          IPA_NAME="MyFitness-${{ steps.version.outputs.full_version }}.ipa"
           mkdir -p Payload
-          cp -r "$RUNNER_TEMP/App.xcarchive/Products/Applications/App.app" Payload/
+          cp -r "$RUNNER_TEMP/MyFitness.xcarchive/Products/Applications/MyFitness.app" Payload/
           zip -r "$IPA_NAME" Payload
           IPA_SIZE=$(stat -f%z "$IPA_NAME")
           echo "ipa_name=$IPA_NAME" >> "$GITHUB_OUTPUT"
