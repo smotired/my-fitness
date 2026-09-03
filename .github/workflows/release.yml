@@ -1,0 +1,95 @@
+name: Build and publish IPA
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Updates source.json for SideStore
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web app
+        run: npm run build
+
+      - name: Set up Capacitor project
+        run: npx cap add ios
+
+      - name: Sync Capacitor project
+        run: npx cap sync ios
+
+      - name: Compute version info
+        id: version
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          BUILD_NUMBER=${{ github.run_number }}
+          FULL_VERSION="${PKG_VERSION}.${BUILD_NUMBER}"
+          TAG="v${FULL_VERSION}"
+          echo "pkg_version=$PKG_VERSION" >> "$GITHUB_OUTPUT"
+          echo "build_number=$BUILD_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "full_version=$FULL_VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "date=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+
+      # No signing certificate, will let SideStore re-sign it.
+      - name: Unsigned archive
+        run: |
+          xcodebuild -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            clean archive
+
+      - name: Package IPA
+        id: package
+        run: |
+          IPA_NAME="App-${{ steps.version.outputs.full_version }}.ipa"
+          mkdir -p Payload
+          cp -r "$RUNNER_TEMP/App.xcarchive/Products/Applications/App.app" Payload/
+          zip -r "$IPA_NAME" Payload
+          IPA_SIZE=$(stat -f%z "$IPA_NAME")
+          echo "ipa_name=$IPA_NAME" >> "$GITHUB_OUTPUT"
+          echo "ipa_size=$IPA_SIZE" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: "Version ${{ steps.version.outputs.full_version }}"
+          files: ${{ steps.package.outputs.ipa_name }}
+
+      - name: Update source.json
+        env:
+          FULL_VERSION: ${{ steps.version.outputs.full_version }}
+          TAG: ${{ steps.version.outputs.tag }}
+          DATE: ${{ steps.version.outputs.date }}
+          IPA_NAME: ${{ steps.package.outputs.ipa_name }}
+          IPA_SIZE: ${{ steps.package.outputs.ipa_size }}
+          REPO: ${{ github.repository }}
+        run: node scripts/update-source.js
+
+      - name: Commit updated source.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add source.json
+          git commit -m "Update source.json for ${{ steps.version.outputs.full_version }} [skip actions]" || echo "No changes to commit"
+          git push
