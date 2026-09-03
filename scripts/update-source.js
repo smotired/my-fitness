@@ -1,10 +1,11 @@
 // Updates source.json (sidestore manifest)
 //
 // Inputs:
-//   FULL_VERSION  e.g. "1.0.0.42"
+//   PKG_VERSION   e.g. "1.0.0"
+//   BUILD_NUMBER  e.g. "42"
 //   TAG           e.g. "v1.0.0.42"   (matches the GitHub Release tag)
 //   DATE          e.g. "2026-09-03"
-//   IPA_NAME      e.g. "App-1.0.0.42.ipa"
+//   IPA_NAME      e.g. "App-1.0.0.ipa"
 //   IPA_SIZE      file size in bytes
 //   REPO          "owner/repo", provided automatically by GitHub Actions
 
@@ -13,7 +14,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 const appId = "dev.whatinthesamhill.myfitness";
 const appName = "My Fitness";
 
-const { FULL_VERSION, TAG, DATE, IPA_NAME, IPA_SIZE, REPO } = process.env;
+const { PKG_VERSION, TAG, DATE, IPA_NAME, IPA_SIZE, REPO, BUILD_NUMBER } = process.env;
 
 const downloadURL = `https://github.com/${REPO}/releases/download/${TAG}/${IPA_NAME}`;
 const iconURL = `https://raw.githubusercontent.com/${REPO}/main/resources/icon-only.png`;
@@ -34,11 +35,11 @@ if (existsSync(sourcePath)) {
 let app = source.apps.find((a) => a.bundleIdentifier === appId);
 
 const versionEntry = {
-    version: FULL_VERSION,
+    version: PKG_VERSION,
     date: DATE,
     downloadURL,
     size: Number(IPA_SIZE),
-    localizedDescription: `Build ${FULL_VERSION}`,
+    localizedDescription: `Build ${BUILD_NUMBER}`,
 };
 
 if (!app) {
@@ -48,7 +49,7 @@ if (!app) {
         developerName: 'Sam Hill',
         localizedDescription: `${appName}. PERSONAL BUILD. NOT FOR DISTRIBUTION.`,
         iconURL,
-        version: FULL_VERSION,
+        version: PKG_VERSION,
         versionDate: DATE,
         downloadURL,
         size: Number(IPA_SIZE),
@@ -56,7 +57,7 @@ if (!app) {
     };
     source.apps.push(app);
 } else {
-    app.version = FULL_VERSION;
+    app.version = PKG_VERSION;
     app.versionDate = DATE;
     app.downloadURL = downloadURL;
     app.size = Number(IPA_SIZE);

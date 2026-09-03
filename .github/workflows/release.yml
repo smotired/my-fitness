@@ -43,11 +43,9 @@ jobs:
         run: |
           PKG_VERSION=$(node -p "require('./package.json').version")
           BUILD_NUMBER=${{ github.run_number }}
-          FULL_VERSION="${PKG_VERSION}.${BUILD_NUMBER}"
-          TAG="v${FULL_VERSION}"
+          TAG="v${PKG_VERSION}.${BUILD_NUMBER}"
           echo "pkg_version=$PKG_VERSION" >> "$GITHUB_OUTPUT"
           echo "build_number=$BUILD_NUMBER" >> "$GITHUB_OUTPUT"
-          echo "full_version=$FULL_VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "date=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
@@ -73,7 +71,7 @@ jobs:
       - name: Package IPA
         id: package
         run: |
-          IPA_NAME="App-${{ steps.version.outputs.full_version }}.ipa"
+          IPA_NAME="App-${{ steps.version.outputs.pkg_version }}.ipa"
           mkdir -p Payload
           cp -r "$RUNNER_TEMP/App.xcarchive/Products/Applications/App.app" Payload/
           zip -r "$IPA_NAME" Payload
@@ -85,12 +83,13 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
-          name: "Version ${{ steps.version.outputs.full_version }}"
+          name: "Version ${{ steps.version.outputs.pkg_version }}"
           files: ${{ steps.package.outputs.ipa_name }}
 
       - name: Update source.json
         env:
-          FULL_VERSION: ${{ steps.version.outputs.full_version }}
+          PKG_VERSION: ${{ steps.version.outputs.pkg_version }}
+          BUILD_NUMBER: ${{ steps.version.outputs.build_number }}
           TAG: ${{ steps.version.outputs.tag }}
           DATE: ${{ steps.version.outputs.date }}
           IPA_NAME: ${{ steps.package.outputs.ipa_name }}
@@ -103,5 +102,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add source.json
-          git commit -m "Update source.json for ${{ steps.version.outputs.full_version }} [skip actions]" || echo "No changes to commit"
+          git commit -m "Update source.json for ${{ steps.version.outputs.pkg_version }} build ${{ steps.version.outputs.build_number }} [skip actions]" || echo "No changes to commit"
           git push
