@@ -8,7 +8,7 @@
 //   IPA_SIZE      file size in bytes
 //   REPO          "owner/repo", provided automatically by GitHub Actions
 
-const fs = require('fs');
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 
 const appId = "dev.whatinthesamhill.myfitness";
 const appName = "My Fitness";
@@ -21,8 +21,8 @@ const iconURL = `https://raw.githubusercontent.com/${REPO}/main/resources/icon-o
 const sourcePath = 'source.json';
 
 let source;
-if (fs.existsSync(sourcePath)) {
-    source = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
+if (existsSync(sourcePath)) {
+    source = JSON.parse(readFileSync(sourcePath, 'utf8'));
 } else {
     source = {
         name: 'Personal Source',
@@ -67,5 +67,5 @@ if (!app) {
     app.versions = app.versions.slice(0, 10);
 }
 
-fs.writeFileSync(sourcePath, JSON.stringify(source, null, 2));
+writeFileSync(sourcePath, JSON.stringify(source, null, 2));
 console.log('source.json updated:\n', JSON.stringify(app, null, 2));
