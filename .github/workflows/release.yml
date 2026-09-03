@@ -33,6 +33,11 @@ jobs:
       - name: Sync Capacitor project
         run: npx cap sync ios
 
+      - name: Generate Xcode workspace
+        run: |
+          cd ios/App
+          xcodebuild -resolvePackageDependencies -project App.xcodeproj -scheme App
+
       - name: Compute version info
         id: version
         run: |
@@ -46,16 +51,13 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "date=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
-      - name: List Xcode project files
-        run: ls ios/App/
-
       # No signing certificate, will let SideStore re-sign it.
       - name: Unsigned archive
         run: |
-          xcodebuild -workspace ios/App/MyFitness.xcworkspace \
-            -scheme MyFitness \
+          xcodebuild -workspace ios/App/App.xcworkspace \
+            -scheme App \
             -configuration Release \
-            -archivePath "$RUNNER_TEMP/MyFitness.xcarchive" \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" \
             -sdk iphoneos \
             -destination 'generic/platform=iOS' \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
@@ -64,9 +66,9 @@ jobs:
       - name: Package IPA
         id: package
         run: |
-          IPA_NAME="MyFitness-${{ steps.version.outputs.full_version }}.ipa"
+          IPA_NAME="App-${{ steps.version.outputs.full_version }}.ipa"
           mkdir -p Payload
-          cp -r "$RUNNER_TEMP/MyFitness.xcarchive/Products/Applications/MyFitness.app" Payload/
+          cp -r "$RUNNER_TEMP/App.xcarchive/Products/Applications/App.app" Payload/
           zip -r "$IPA_NAME" Payload
           IPA_SIZE=$(stat -f%z "$IPA_NAME")
           echo "ipa_name=$IPA_NAME" >> "$GITHUB_OUTPUT"
