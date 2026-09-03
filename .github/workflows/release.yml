@@ -59,7 +59,7 @@ jobs:
       # No signing certificate, will let SideStore re-sign it.
       - name: Unsigned archive
         run: |
-          xcodebuild -workspace ios/App/App.xcodeproj \
+          xcodebuild -project ios/App/App.xcodeproj \
             -scheme App \
             -configuration Release \
             -archivePath "$RUNNER_TEMP/App.xcarchive" \
