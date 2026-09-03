@@ -8,11 +8,18 @@
       "developerName": "Sam Hill",
       "localizedDescription": "My Fitness. PERSONAL BUILD. NOT FOR DISTRIBUTION.",
       "iconURL": "https://raw.githubusercontent.com/smotired/my-fitness/main/resources/icon-only.png",
-      "version": "0.0.1.10",
+      "version": "0.0.1.11",
       "versionDate": "2026-09-03",
-      "downloadURL": "https://github.com/smotired/my-fitness/releases/download/v0.0.1.10/App-0.0.1.10.ipa",
-      "size": 1340755,
+      "downloadURL": "https://github.com/smotired/my-fitness/releases/download/v0.0.1.11/App-0.0.1.11.ipa",
+      "size": 1340758,
       "versions": [
+        {
+          "version": "0.0.1.11",
+          "date": "2026-09-03",
+          "downloadURL": "https://github.com/smotired/my-fitness/releases/download/v0.0.1.11/App-0.0.1.11.ipa",
+          "size": 1340758,
+          "localizedDescription": "Build 0.0.1.11"
+        },
         {
           "version": "0.0.1.10",
           "date": "2026-09-03",
