@@ -51,10 +51,15 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "date=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
+      - name: List Xcode project files
+        run: ls ios/App/
+      - name: List schemes
+        run: xcodebuild -project ios/App/App.xcodeproj -list
+
       # No signing certificate, will let SideStore re-sign it.
       - name: Unsigned archive
         run: |
-          xcodebuild -workspace ios/App/App.xcworkspace \
+          xcodebuild -workspace ios/App/App.xcodeproj \
             -scheme App \
             -configuration Release \
             -archivePath "$RUNNER_TEMP/App.xcarchive" \
