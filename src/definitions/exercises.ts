@@ -34,11 +34,6 @@ export const Stretches = {
         description: "Forearm on a doorframe, elbow shoulder height. Step through doorway to stretch chest.",
         double: 'way',
     },
-    overheadTricepStretch: {
-        name: "Overhead Tricep Stretch",
-        description: "Bend arm behind head. Use other hand to gently push elbow back.",
-        double: 'arm',
-    },
     crossShoulderStretch: {
         name: "Cross-body Shoulder Stretch",
         description: "Pull arm straight across chest with other arm.",
@@ -52,6 +47,11 @@ export const Stretches = {
     catCow: {
         name: "Cat-Cow",
         description: "Hands and knees. Arch back up, hold, dip down, repeat.",
+        double: null,
+    },
+    standingRolldowns: {
+        name: "Standing Rolldowns",
+        description: "Default pose. Slowly roll spine down, letting arms hang. Slowly unroll.",
         double: null,
     },
     torsoTwists: {
@@ -69,9 +69,9 @@ export const Stretches = {
         description: "Sit, reach for toes, rounding lower back.",
         double: null,
     },
-    crossBicepStretch: {
-        name: "Cross-body Bicep Stretch",
-        description: "Extend one arm to side, palm up. Gently pull fingers back with other hand.",
+    doorwayBicepStretch: {
+        name: "Doorway Bicep Stretch",
+        description: "Arm straight out to side, place hand on doorframe, thumb back. Rotate torso away to stretch.",
         double: 'arm',
     },
     legSwings: {
@@ -200,6 +200,11 @@ export const DumbbellExercises = {
     walkingLunges: {
         name: "Walking Lunges",
         description: "Walking lunges with dumbbell in each hand.",
+        double: 'leg',
+    },
+    reverseLunges: {
+        name: "Reverse Lunges",
+        description: "Backward lunges dumbbell in each hand. Standing position then move a foot backward.",
         double: 'leg',
     },
     romanianDeadlifts: {

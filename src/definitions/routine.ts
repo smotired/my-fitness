@@ -46,7 +46,7 @@ const Routine: Record<Weekday, DailyRoutine> = {
                 amount: { kind: 'duration', seconds: 20 },
             },
             {
-                kind: 'overheadTricepStretch',
+                kind: 'overheadShoulderStretch',
                 amount: { kind: 'duration', seconds: 20 },
             },
             {
@@ -69,7 +69,7 @@ const Routine: Record<Weekday, DailyRoutine> = {
     tuesday: {
         preStretches: [
             {
-                kind: 'catCow',
+                kind: 'standingRolldowns',
                 amount: { kind: 'count', count: 10 },
             },
             {
@@ -117,7 +117,7 @@ const Routine: Record<Weekday, DailyRoutine> = {
                 amount: { kind: 'duration', seconds: 20 },
             },
             {
-                kind: 'crossBicepStretch',
+                kind: 'doorwayBicepStretch',
                 amount: { kind: 'duration', seconds: 20 },
             },
         ],
@@ -154,7 +154,7 @@ const Routine: Record<Weekday, DailyRoutine> = {
                 amount: { kind: 'sets', sets: 3, amount: { kind: 'count', count: 12 } },
             },
             {
-                'kind': 'walkingLunges',
+                'kind': 'reverseLunges',
                 amount: { kind: 'sets', sets: 3, amount: { kind: 'count', count: 10 } },
             },
             {
@@ -177,10 +177,6 @@ const Routine: Record<Weekday, DailyRoutine> = {
             },
             {
                 kind: 'fig4GluteStretch',
-                amount: { kind: 'duration', seconds: 20 },
-            },
-            {
-                kind: 'standingCalfStretch',
                 amount: { kind: 'duration', seconds: 20 },
             },
             {
@@ -211,7 +207,7 @@ const Routine: Record<Weekday, DailyRoutine> = {
                 amount: { kind: 'duration', seconds: 30 },
             },
             {
-                kind: 'catCow',
+                kind: 'standingRolldowns',
                 amount: { kind: 'count', count: 10 },
             },
         ],
@@ -284,15 +280,15 @@ const Routine: Record<Weekday, DailyRoutine> = {
         ],
         dumbbells: [
             {
-                'kind': 'squatToPress',
+                'kind': 'gobletSquats',
+                amount: { kind: 'sets', sets: 3, amount: { kind: 'count', count: 12 } },
+            },
+            {
+                'kind': 'bentOverRows',
                 amount: { kind: 'sets', sets: 3, amount: { kind: 'count', count: 10 } },
             },
             {
-                'kind': 'renegadeRows',
-                amount: { kind: 'sets', sets: 3, amount: { kind: 'count', count: 10 } },
-            },
-            {
-                'kind': 'deadliftToCurl',
+                'kind': 'overheadPress',
                 amount: { kind: 'sets', sets: 3, amount: { kind: 'count', count: 10 } },
             },
             {
